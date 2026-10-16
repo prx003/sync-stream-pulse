@@ -47,7 +47,7 @@ function Profile() {
         </div>
         {p.bio && <p className="mt-3 max-w-md text-sm">{p.bio}</p>}
         {p.website && <a href={p.website} target="_blank" rel="noreferrer" className="mt-1 text-sm text-primary">{p.website}</a>}
-        <div className="mt-4">{p.id !== userId ? <ConnectButton otherId={p.id} size="default" /> : <EditProfileDialog key={p.id + p.updated_at} profile={p} />}</div>
+        <div className="mt-4">{p.id !== userId ? <ConnectButton otherId={p.id} size="default" /> : <EditProfileDialog key={p.id + (p.avatar_url ?? "") + (p.bio ?? "")} profile={p} />}</div>
       </div>
       <Highlights authorId={p.id} username={p.username} displayName={p.display_name} avatarUrl={p.avatar_url} isSelf={p.id === userId} />
       <Dialog open={peopleOpen} onOpenChange={setPeopleOpen}>
