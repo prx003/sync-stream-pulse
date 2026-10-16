@@ -62,7 +62,7 @@ function Profile() {
         </DialogContent>
       </Dialog>
       <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto border-b border-border">
-        {tabs.map((t) => <button key={t} onClick={() => setTab(t)} className={cn("shrink-0 border-b-2 px-3 py-2 text-sm capitalize", tab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground")}>{t === "all" ? "All" : TYPE_LABEL[t] + "s"}</button>)}
+        {tabs.map((t) => <button key={t} onClick={() => setTab(t)} className={cn("shrink-0 border-b-2 px-3 py-2 text-sm capitalize", tab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground")}>{t === "all" ? "All" : t === "story" ? "\n" : TYPE_LABEL[t] + "s"}</button>)}
       </div>
       <div className="mt-2 grid grid-cols-3 gap-1">
         {shown.map((c) => (
