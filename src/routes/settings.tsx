@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
@@ -123,6 +124,9 @@ function Home({ go }: { go: (v: View) => void }) {
     <>
       <Section title="Your dashboard">
         <Row icon={BarChart3} label="Insights" hint="Followers, views & more" onClick={() => go("insights")} />
+      </Section>
+      <Section title="Appearance">
+        <ThemeToggle />
       </Section>
       <Section title="Account settings">
         <Row icon={Lock} label="Account privacy" hint={profile?.is_private ? "Private" : "Public"} onClick={() => go("privacy")} />
