@@ -140,7 +140,7 @@ export function ContentCard({ c, liked, saved, compact }: { c: Content; liked: b
       {(c.media_url || c.cover_url) && (
         <Link to="/c/$id" params={{ id: c.id }} className="mt-3 block bg-black/40">
           {c.media_kind === "video" ? (
-            <video src={c.media_url!} poster={c.cover_url ?? undefined} controls playsInline className={cn("w-full object-contain", c.type === "reel" ? "max-h-[560px]" : "max-h-[520px]")} onClick={(e) => e.preventDefault()} />
+            <video src={c.media_url!} poster={c.cover_url ?? undefined} controls={c.type !== "reel"} loop={c.type === "reel"} playsInline className={cn("w-full object-contain", c.type === "reel" ? "max-h-[560px]" : "max-h-[520px]")} onClick={(e) => { e.preventDefault(); if (c.type === "reel") { const v = e.currentTarget; v.paused ? v.play() : v.pause(); } }} />
           ) : (
             <img src={(c.media_url || c.cover_url)!} alt={c.title} loading="lazy" className="max-h-[560px] w-full object-cover" />
           )}
