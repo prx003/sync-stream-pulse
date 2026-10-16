@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
-import { PlusSquare, Image, Clapperboard, CircleDot, Type, CalendarDays, Ticket, Newspaper } from "lucide-react";
+import type { ReactNode } from "react";
+import { Sparkles, PlusSquare, Image, Clapperboard, CircleDot, Type, CalendarDays, Ticket, Newspaper } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -16,15 +17,16 @@ const BUSINESS = [
   { type: "news", label: "Publish News", icon: Newspaper },
 ] as const;
 
-export function CreateMenu() {
+export function CreateMenu({ trigger }: { trigger?: ReactNode } = {}) {
   const { profile } = useAuth();
   const navigate = useNavigate();
   const options = profile?.account_type === "business" ? [...PERSONAL, ...BUSINESS] : PERSONAL;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild><Button size="sm"><PlusSquare className="h-4 w-4" />Create</Button></DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{trigger ?? <Button size="sm"><PlusSquare className="h-4 w-4" />Create</Button>}</DropdownMenuTrigger>
       <DropdownMenuContent align="center" className="w-52">
         <DropdownMenuLabel>Create</DropdownMenuLabel>
+        <DropdownMenuItem onSelect={() => navigate({ to: "/create", search: { type: "story" } })}><Sparkles className="mr-2 h-4 w-4 text-primary" />New Highlight</DropdownMenuItem>
         {options.map((option) => <DropdownMenuItem key={option.type} onSelect={() => navigate({ to: "/create", search: { type: option.type } })}><option.icon className="mr-2 h-4 w-4 text-primary" />{option.label}</DropdownMenuItem>)}
       </DropdownMenuContent>
     </DropdownMenu>
