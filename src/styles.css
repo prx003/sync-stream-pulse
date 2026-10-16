@@ -85,3 +85,22 @@
 }
 @utility animate-rise { animation: rise 0.45s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+html.light {
+  color-scheme: light;
+  --background: oklch(0.985 0.003 20);
+  --foreground: oklch(0.18 0.006 20);
+  --surface: oklch(0.96 0.004 20);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.006 20);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.006 20);
+  --secondary: oklch(0.94 0.005 20);
+  --secondary-foreground: oklch(0.18 0.006 20);
+  --muted: oklch(0.94 0.005 20);
+  --muted-foreground: oklch(0.45 0.01 20);
+  --accent: oklch(0.93 0.03 25);
+  --accent-foreground: oklch(0.18 0.006 20);
+  --border: oklch(0.89 0.006 20);
+  --input: oklch(0.87 0.006 20);
+}
