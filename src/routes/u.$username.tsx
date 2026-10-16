@@ -6,7 +6,6 @@ import { RequireAuth, useAuth } from "@/lib/auth";
 import { fetchContent, TYPE_LABEL } from "@/lib/content";
 import { AccountBadge, UserAvatar } from "@/components/UserAvatar";
 import { ConnectButton } from "@/components/ConnectButton";
-import { CreateMenu } from "@/components/CreateMenu";
 import { Highlights } from "@/components/Highlights";
 import { ConnectionsList } from "@/components/ConnectionsList";
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,7 @@ function Profile() {
         </div>
         {p.bio && <p className="mt-3 max-w-md text-sm">{p.bio}</p>}
         {p.website && <a href={p.website} target="_blank" rel="noreferrer" className="mt-1 text-sm text-primary">{p.website}</a>}
-        <div className="mt-4">{p.id === userId ? <CreateMenu /> : <ConnectButton otherId={p.id} size="default" />}</div>
+        <div className="mt-4">{p.id !== userId && <ConnectButton otherId={p.id} size="default" />}</div>
       </div>
       <Highlights authorId={p.id} username={p.username} displayName={p.display_name} avatarUrl={p.avatar_url} isSelf={p.id === userId} />
       <Dialog open={peopleOpen} onOpenChange={setPeopleOpen}>

@@ -7,6 +7,7 @@ import { CONTENT_SELECT, type Content } from "@/lib/content";
 import { demoHighlights } from "@/lib/demo-content";
 import { StoryViewer, type Group } from "./Stories";
 import { cn } from "@/lib/utils";
+import { CreateMenu } from "./CreateMenu";
 
 type Highlight = { id: string; label: string; cover: string | null; demo?: boolean; group: Group };
 
@@ -58,12 +59,12 @@ export function Highlights({ authorId, username, displayName, avatarUrl, isSelf 
     <>
       <div className="no-scrollbar mt-6 flex gap-4 overflow-x-auto pb-1">
         {isSelf && (
-          <button onClick={toCreate} className="flex w-16 shrink-0 flex-col items-center gap-1.5" aria-label="New highlight">
+          <CreateMenu trigger={<button className="flex w-16 shrink-0 flex-col items-center gap-1.5" aria-label="Create">
             <span className="grid h-[62px] w-[62px] place-items-center rounded-full border border-dashed border-border bg-surface text-muted-foreground">
               <Plus className="h-6 w-6" />
             </span>
             <span className="w-full truncate text-center text-xs text-muted-foreground">New</span>
-          </button>
+          </button>} />
         )}
         {shown.map((h) => (
           <button
