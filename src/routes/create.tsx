@@ -192,7 +192,7 @@ function Composer() {
 
       {step === "details" && (
         <div className="flex-1">
-          {type === "story" && <div className="bg-surface px-4 py-5"><Preview /></div>}
+          {type === "story" && <div className="bg-surface px-4 py-5 [&>div]:max-w-[200px] sm:[&>div]:max-w-[240px]"><Preview /></div>}
           <div className="flex gap-3 border-b border-border p-4">
             <UserAvatar src={profile?.avatar_url ?? null} name={profile?.display_name ?? ""} size={36} />
             <div className="flex-1 space-y-2">
