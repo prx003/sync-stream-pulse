@@ -7,7 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { RequireAuth, useAuth } from "@/lib/auth";
 import { uploadMedia } from "@/lib/media";
 import { TYPE_LABEL } from "@/lib/content";
-import { ASPECTS, AUDIENCES, FILTERS, TRACKS, filterCss } from "@/lib/composer";
+import { ASPECTS, AUDIENCES, FILTERS, filterCss } from "@/lib/composer";
+import { MusicPicker } from "@/components/MusicPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -262,28 +263,6 @@ function Row({ icon: Icon, label, value, onClick }: { icon: typeof Music; label:
       {value && <span className="max-w-[45%] truncate text-sm text-muted-foreground">{value}</span>}
       <ChevronRight className="h-4 w-4 text-muted-foreground" />
     </Button>
-  );
-}
-
-function MusicPicker({ value, onPick }: { value: { title: string; artist: string } | null; onPick: (m: { title: string; artist: string } | null) => void }) {
-  const [q, setQ] = useState("");
-  const list = TRACKS.filter((t) => `${t.title} ${t.artist}`.toLowerCase().includes(q.toLowerCase()));
-  return (
-    <>
-      <SheetHeader><SheetTitle>Music</SheetTitle></SheetHeader>
-      <div className="space-y-2 px-4 pb-6">
-        <Input placeholder="Search music" value={q} onChange={(e) => setQ(e.target.value)} />
-        {value && <Button variant="ghost" className="w-full justify-start text-destructive" onClick={() => onPick(null)}><X className="h-4 w-4" />Remove music</Button>}
-        {list.map((t) => (
-          <button key={t.title} onClick={() => onPick(t)} className="flex w-full items-center gap-3 rounded-lg p-2 text-left hover:bg-muted">
-            <span className="flex h-11 w-11 items-center justify-center rounded-md bg-gradient-primary text-primary-foreground"><Music className="h-5 w-5" /></span>
-            <span className="flex-1"><b className="block text-sm">{t.title}</b><span className="text-xs text-muted-foreground">{t.artist}</span></span>
-            {value?.title === t.title && <Check className="h-5 w-5 text-primary" />}
-          </button>
-        ))}
-        {q && !list.length && <Button variant="secondary" className="w-full" onClick={() => onPick({ title: q, artist: "Original audio" })}>Use “{q}”</Button>}
-      </div>
-    </>
   );
 }
 

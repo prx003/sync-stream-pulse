@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Add music preview playback, seeking, volume and song-label editing; verify in the signed-in story form without publishing content.
 - [x] Set menu order to Home, Reels, Explore, Notifications, Messages and verify Create is available only on the own profile.
 - [x] Move people controls into the profile header and verify the popup lists; remove the section below Highlights.
 - [x] Add Instagram-style profile connections, people to connect with, and connection states.
