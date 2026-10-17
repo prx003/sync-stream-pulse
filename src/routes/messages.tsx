@@ -12,7 +12,7 @@ import { timeAgo } from "@/lib/media";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/messages")({
-  head: () => ({ meta: [{ title: "Messages · SAC Community" }, { name: "description", content: "Your private messages and tweets." }, { property: "og:title", content: "Messages" }, { property: "og:description", content: "Your private messages and tweets." }] }),
+  head: () => ({ meta: [{ title: "Messages · SAC Community" }, { name: "description", content: "Your private messages and tweets." }, { property: "og:title", content: "Messages" }, { property: "og:description", content: "Your private messages and tweets." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <RequireAuth><MessagesPage /></RequireAuth>,
 });
 

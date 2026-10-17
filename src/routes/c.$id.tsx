@@ -9,7 +9,7 @@ import { ContentCard, useComments, CommentBox } from "@/components/ContentCard";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/c/$id")({
-  head: () => ({ meta: [{ title: "Post · SAC Community" }, { name: "description", content: "View this post on SAC Community." }, { property: "og:title", content: "SAC Community post" }, { property: "og:description", content: "View this post on SAC Community." }] }),
+  head: () => ({ meta: [{ title: "Post · SAC Community" }, { name: "description", content: "View this post on SAC Community." }, { property: "og:title", content: "SAC Community post" }, { property: "og:description", content: "View this post on SAC Community." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <RequireAuth><Detail /></RequireAuth>,
 });
 

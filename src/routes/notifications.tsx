@@ -6,7 +6,7 @@ import { RequireAuth, useAuth } from "@/lib/auth";
 import { timeAgo } from "@/lib/media";
 
 export const Route = createFileRoute("/notifications")({
-  head: () => ({ meta: [{ title: "Notifications · SAC Community" }, { name: "description", content: "Your SAC Community notifications." }, { property: "og:title", content: "Notifications" }, { property: "og:description", content: "Your SAC Community notifications." }] }),
+  head: () => ({ meta: [{ title: "Notifications · SAC Community" }, { name: "description", content: "Your SAC Community notifications." }, { property: "og:title", content: "Notifications" }, { property: "og:description", content: "Your SAC Community notifications." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <RequireAuth><N /></RequireAuth>,
 });
 
