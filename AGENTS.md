@@ -15,3 +15,4 @@
 - Keep profile people lists in ConnectionsList and connection actions in ConnectButton; shared query invalidation keeps counts and lists consistent after actions.
 - Open profile people lists in a dialog from header controls rather than a section below Highlights, keeping the profile content uninterrupted.
 - Keep content creation options (including New Highlight) in the shared CreateMenu, opened from the "New" circle in the own-profile Highlights row; no separate Create button.
+- Keep media overlay colors independent of the page theme and use the shared social Button variant for composer actions, so controls stay legible in both appearance modes.

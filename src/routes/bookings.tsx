@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { RequireAuth, useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/bookings")({
-  head: () => ({ meta: [{ title: "My bookings · SAC Community" }, { name: "description", content: "Your event registrations and tickets." }, { property: "og:title", content: "My bookings" }, { property: "og:description", content: "Your event registrations and tickets." }] }),
+  head: () => ({ meta: [{ title: "My bookings · SAC Community" }, { name: "description", content: "Your event registrations and tickets." }, { property: "og:title", content: "My bookings" }, { property: "og:description", content: "Your event registrations and tickets." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <RequireAuth><B /></RequireAuth>,
 });
 

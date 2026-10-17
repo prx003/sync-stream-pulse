@@ -16,6 +16,8 @@ export const Route = createFileRoute("/explore")({
       { name: "description", content: "Search people, businesses, posts, reels, events, tickets and news." },
       { property: "og:title", content: "Explore SAC Community" },
       { property: "og:description", content: "Discover people, businesses and events." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => <RequireAuth><Explore /></RequireAuth>,

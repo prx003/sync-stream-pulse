@@ -34,11 +34,20 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-surface: var(--surface);
+  --color-media: var(--media);
+  --color-media-foreground: var(--media-foreground);
+  --color-social-action: var(--social-action);
+  --color-social-action-foreground: var(--social-action-foreground);
   --color-ring-offset-background: var(--background);
 }
 
 :root {
   --radius: 0.9rem;
+  --media: oklch(0.08 0 0);
+  --media-foreground: oklch(0.99 0 0);
+  --social-action: oklch(0.59 0.19 250);
+  --social-action-foreground: oklch(0.99 0 0);
+  --shadow-media: 0 1px 8px oklch(0.08 0 0 / 0.5);
   --background: oklch(0.13 0.004 20);
   --foreground: oklch(0.97 0.004 20);
   --surface: oklch(0.17 0.005 20);
@@ -73,10 +82,11 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: 0; }
 }
 
 @utility story-ring { background: var(--gradient-ring); }
+@utility text-shadow-media { text-shadow: var(--shadow-media); }
 @utility bg-gradient-primary { background: var(--gradient-primary); }
 @utility shadow-glow { box-shadow: var(--shadow-glow); }
 @utility no-scrollbar {
@@ -85,6 +95,7 @@
 }
 @utility animate-rise { animation: rise 0.45s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .animate-rise { animation: none; } }
 
 html.light {
   color-scheme: light;

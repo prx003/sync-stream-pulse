@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, ImagePlus, MapPin, Music, Users, Tag, ChevronRight, X, Check, Type as TypeIcon, Eye } from "lucide-react";
+import { ArrowLeft, ImagePlus, MapPin, Music, Users, Tag, ChevronRight, X, Check, Type as TypeIcon, Eye, Film, Plus, ArrowUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RequireAuth, useAuth } from "@/lib/auth";
 import { uploadMedia } from "@/lib/media";
@@ -96,9 +96,10 @@ function Composer() {
         if (error) throw error;
         toast.success("Changes saved");
       } else {
-        const m = await uploadMedia(userId!, file!);
+        if (!userId || !file) throw new Error("Please sign in and select your media");
+        const m = await uploadMedia(userId, file);
         const { error } = await supabase.from("content").insert({
-          ...fields, author_id: userId!, type: type as never, media_url: m.url, media_kind: m.kind,
+          ...fields, author_id: userId, type: type as never, media_url: m.url, media_kind: m.kind,
           expires_at: type === "story" ? new Date(Date.now() + 864e5).toISOString() : null,
         });
         if (error) throw error;
@@ -113,7 +114,7 @@ function Composer() {
   const label = edit ? `Edit ${TYPE_LABEL[type].toLowerCase()}` : step === "select" ? `New ${TYPE_LABEL[type].toLowerCase()}` : step === "edit" ? "Edit" : type === "story" ? "Your story" : `New ${TYPE_LABEL[type].toLowerCase()}`;
 
   const Preview = ({ small }: { small?: boolean }) => previewUrl ? (
-    <div className={cn("relative mx-auto overflow-hidden rounded-xl bg-muted", small ? "h-20 w-16 shrink-0" : "w-full max-w-md")} style={small ? undefined : { aspectRatio: aspect === "original" ? undefined : aspect }}>
+    <div className={cn("relative mx-auto overflow-hidden rounded-lg bg-media", small ? "h-20 w-16 shrink-0" : type === "post" ? "w-full max-w-md" : "w-full max-w-[280px] sm:max-w-[340px]")} style={small ? undefined : { aspectRatio: aspect === "original" ? undefined : aspect }}>
       {isVideo ? <video src={previewUrl} autoPlay={!small} muted loop playsInline className="h-full w-full object-cover" style={{ filter: css }} />
         : <img src={previewUrl} alt="" className="h-full w-full object-cover" style={{ filter: css }} />}
       {!small && type === "story" && f.overlay && <p className="absolute inset-x-4 top-1/2 -translate-y-1/2 rounded-lg bg-background/70 px-3 py-2 text-center text-xl font-bold">{f.overlay}</p>}
@@ -122,21 +123,34 @@ function Composer() {
   ) : null;
 
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-4rem)] max-w-xl flex-col">
+    <div className="mx-auto flex min-h-[calc(100dvh-8rem)] max-w-xl flex-col pb-20 sm:pb-6">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/95 px-4 py-3 backdrop-blur">
-        <button onClick={back} aria-label="Back"><ArrowLeft className="h-6 w-6" /></button>
+        <Button variant="ghost" size="icon" onClick={back} aria-label="Back"><ArrowLeft /></Button>
         <h1 className="font-bold">{label}</h1>
-        {step === "edit" ? <button className="font-semibold text-primary" onClick={() => setStep("details")}>Next</button>
-          : step === "details" ? <button className="font-semibold text-primary disabled:opacity-50" disabled={busy} onClick={share}>{busy ? "Sharing…" : edit ? "Done" : "Share"}</button>
+        {step === "edit" ? <Button variant="ghost" className="font-semibold text-social-action" onClick={() => setStep("details")}>Next<ChevronRight /></Button>
+          : step === "details" ? <Button variant="ghost" className="font-semibold text-social-action" disabled={busy} onClick={share}>{busy ? "Sharing…" : edit ? "Done" : "Share"}</Button>
           : <span className="w-6" />}
       </header>
 
       {step === "select" && (
-        <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
-          <ImagePlus className="h-20 w-20 text-muted-foreground" strokeWidth={1} />
-          <p className="text-lg">{type === "reel" ? "Pick a video for your reel" : "Drag photos and videos here"}</p>
-          <Button variant="hero" onClick={() => fileRef.current?.click()}>Select from device</Button>
-          <input ref={fileRef} type="file" hidden accept={type === "reel" ? "video/*" : "image/*,video/*"} onChange={pick} />
+        <div className="flex flex-1 flex-col">
+          <div className="flex items-center gap-3 border-b border-border/60 px-5 py-4">
+            <span className="story-ring rounded-full p-0.5"><UserAvatar src={profile?.avatar_url ?? null} name={profile?.display_name ?? ""} size={40} /></span>
+            <div className="min-w-0"><p className="truncate text-sm font-semibold">{profile?.display_name}</p><p className="text-xs text-muted-foreground">{type === "story" ? "Your story" : type === "reel" ? "New reel" : "New post"}</p></div>
+          </div>
+          <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-14 text-center">
+            <div className="relative grid h-28 w-28 place-items-center">
+              <span className="absolute left-2 top-4 h-20 w-16 -rotate-12 rounded-lg border-2 border-foreground/70 bg-surface" />
+              <span className="relative grid h-20 w-16 rotate-12 place-items-center rounded-lg border-2 border-foreground bg-background">{type === "reel" ? <Film className="h-8 w-8 -rotate-12" strokeWidth={1.5} /> : <ImagePlus className="h-8 w-8 -rotate-12" strokeWidth={1.5} />}</span>
+              <span className="absolute bottom-0 right-0 grid h-8 w-8 place-items-center rounded-full bg-social-action text-social-action-foreground"><Plus className="h-5 w-5" /></span>
+            </div>
+            <h2 className="text-2xl font-semibold">{type === "story" ? "Add to your story" : type === "reel" ? "Create a reel" : "Create a new post"}</h2>
+            <Button variant="social" className="h-11 px-6" onClick={() => fileRef.current?.click()}><ImagePlus />{type === "reel" ? "Select video" : "Select photos or videos"}</Button>
+            <input ref={fileRef} type="file" hidden accept={type === "reel" ? "video/*" : "image/*,video/*"} onChange={pick} />
+          </div>
+          <div className="flex justify-center gap-8 border-t border-border py-4">
+            {(["post", "story", "reel"] as const).map((mode) => <Button key={mode} variant="ghost" className={cn("rounded-none px-0 text-sm uppercase", type === mode ? "border-b-2 border-foreground font-bold" : "text-muted-foreground")} onClick={() => nav({ to: "/create", search: { type: mode } })}>{TYPE_LABEL[mode]}</Button>)}
+          </div>
         </div>
       )}
 
@@ -172,12 +186,13 @@ function Composer() {
               ))}
             </div>
           )}
-          {type === "story" && <Input placeholder="Add text to your story" value={f.overlay} onChange={(e) => setF({ ...f, overlay: e.target.value })} maxLength={80} />}
+          {type === "story" && <Input aria-label="Story text" className="h-12" placeholder="Aa · Add text to your story" value={f.overlay} onChange={(e) => setF({ ...f, overlay: e.target.value })} maxLength={80} />}
         </div>
       )}
 
       {step === "details" && (
         <div className="flex-1">
+          {type === "story" && <div className="bg-surface px-4 py-5 [&>div]:max-w-[200px] sm:[&>div]:max-w-[240px]"><Preview /></div>}
           <div className="flex gap-3 border-b border-border p-4">
             <UserAvatar src={profile?.avatar_url ?? null} name={profile?.display_name ?? ""} size={36} />
             <div className="flex-1 space-y-2">
@@ -185,7 +200,7 @@ function Composer() {
               <Textarea placeholder="Write a caption… use #hashtags and @mentions" value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} maxLength={2200} rows={4} className="resize-none border-0 px-0 shadow-none focus-visible:ring-0" />
               <p className="text-right text-xs text-muted-foreground">{f.description.length}/2200</p>
             </div>
-            <Preview small />
+            {type !== "story" && <Preview small />}
           </div>
           {type === "story" && edit && <div className="border-b border-border p-4"><Input placeholder="Text on story" value={f.overlay} onChange={(e) => setF({ ...f, overlay: e.target.value })} /></div>}
           <Row icon={Music} label="Add music" value={music ? `${music.title} · ${music.artist}` : undefined} onClick={() => setSheet("music")} />
@@ -193,7 +208,7 @@ function Composer() {
           {type !== "story" && <Row icon={Tag} label="Tag people" value={f.tagged || undefined} onClick={() => setSheet("tag")} />}
           <Row icon={Users} label="Audience" value={AUDIENCES.find((a) => a.id === audience)?.label} onClick={() => setSheet("audience")} />
           {type !== "story" && <Row icon={Eye} label="Advanced settings" onClick={() => setSheet("advanced")} />}
-          <div className="p-4"><Button variant="hero" className="h-11 w-full" disabled={busy} onClick={share}>{busy ? "Sharing…" : edit ? "Save changes" : type === "story" ? "Share to story" : "Share"}</Button></div>
+          <div className="p-4"><Button variant="social" className="h-12 w-full" disabled={busy} onClick={share}>{busy ? "Sharing…" : edit ? "Save changes" : type === "story" ? "Share to your story" : "Share"}<ArrowUp /></Button></div>
         </div>
       )}
 
@@ -241,12 +256,12 @@ function Composer() {
 
 function Row({ icon: Icon, label, value, onClick }: { icon: typeof Music; label: string; value?: string; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-3 border-b border-border px-4 py-3.5 text-left hover:bg-muted/50">
+    <Button variant="ghost" onClick={onClick} className="h-auto w-full justify-start gap-3 rounded-none border-b border-border px-4 py-4 text-left">
       <Icon className="h-5 w-5 shrink-0" />
-      <span className="flex-1">{label}</span>
+      <span className="flex-1 font-normal">{label}</span>
       {value && <span className="max-w-[45%] truncate text-sm text-muted-foreground">{value}</span>}
       <ChevronRight className="h-4 w-4 text-muted-foreground" />
-    </button>
+    </Button>
   );
 }
 

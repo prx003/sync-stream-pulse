@@ -16,6 +16,8 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Join SAC Community with a personal or business account." },
       { property: "og:title", content: "Join SAC Community" },
       { property: "og:description", content: "Create a personal or business account on SAC Community." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AuthPage,

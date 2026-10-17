@@ -32,9 +32,9 @@ function Feed() {
   const { data, isLoading, error } = useQuery({ queryKey: ["feed"], queryFn: () => fetchContent({ types: FEED_TYPES }) });
   const { data: r } = useReactions();
   return (
-    <div className="relative mx-auto max-w-2xl px-2 pt-4 sm:px-5">
+    <div className="relative mx-auto max-w-[540px] pt-2 sm:px-5 sm:pt-5">
       <StoriesRail />
-      <section className="min-w-0 space-y-5 pb-16">
+      <section className="min-w-0 space-y-4 pb-16 sm:space-y-6">
         {isLoading && Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-72 animate-pulse rounded-2xl bg-card" />)}
         {error && <p className="rounded-xl bg-destructive/15 p-4 text-sm">Couldn't load the feed. {(error as Error).message}</p>}
         {r && data?.map((c) => <ContentCard key={c.id} c={c} liked={r.liked.has(c.id)} saved={r.saved.has(c.id)} />)}
