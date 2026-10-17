@@ -6,5 +6,6 @@
 - [x] Add clearly labeled sample posts and stories without modifying real accounts.
 - [x] Replace the story strip with one freely draggable floating story ring that opens everyone's stories.
 - [x] Verify floating-button movement and story navigation on mobile and desktop.
-- [ ] Improve story creation, posts and reels with Instagram-inspired presentation.
-- [ ] Verify the updated creation form and feed while signed in.
+- [x] Improve story creation, posts and reels with Instagram-inspired presentation.
+- [x] Verify story upload, text overlay, sharing form and feed while signed in on phone and desktop; no test content published.
+- [ ] Verify reel playback with an existing reel — blocked because the account has no reels.
